@@ -24,7 +24,7 @@ class Checker(object):
 
         self.tokens = []
 
-        for f in open("data/tokens.txt"):
+        for f in open("data/tokens.txt", encoding="utf-8", errors="ignore"):
             self.tokens.append(f.replace("\n", ""))
 
         with open("data/proxies.txt", encoding="utf-8") as f:
@@ -57,7 +57,7 @@ class Checker(object):
     
     async def start(self):
         async with TaskPool(self.tasks) as pool:
-            for token in self.tokens:
+            for token in list(set(self.tokens)):
                 await pool.put(self.check_tokens(token))
 
 if __name__ == "__main__":
